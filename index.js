@@ -90,31 +90,31 @@ client.connect((err) => {
       specialist: specialist,
       doctorEmail: email,
     };
-    const filePath = `${__dirname}/doctors-image/doctor-${img.name}`;
-    img.mv(filePath, (err) => {
-      if (err) {
-        console.log("File Not uploaded");
-        res.status(500).send({ msg: "Failed to upload." });
-      }
-      const newImg = fs.readFileSync(filePath);
-      const encImg = newImg.toString("base64");
+    // const filePath = `${__dirname}/doctors-image/doctor-${img.name}`;
+    // img.mv(filePath, (err) => {
+    // if (err) {
+    //   console.log("File Not uploaded");
+    //   res.status(500).send({ msg: "Failed to upload." });
+    // }
+    const newImg = req.files.doctorImg.data;
+    const encImg = newImg.toString("base64");
 
-      const image = {
-        type: img.mimetype,
-        size: img.size,
-        img: Buffer.from(encImg, "base64"),
-      };
+    const image = {
+      type: img.mimetype,
+      size: img.size,
+      img: Buffer.from(encImg, "base64"),
+    };
 
-      doctorsCollection.insertOne({ ...doctorInfo, doctorImg: image }).then((result) => {
-        fs.remove(filePath, (error) => {
-          if (error) {
-            console.log(error);
-            res.status(500).send({ msg: "Failed to upload." });
-          }
-          res.send(result.insertedCount > 0);
-        });
-      });
+    doctorsCollection.insertOne({ ...doctorInfo, doctorImg: image }).then((result) => {
+      // fs.remove(filePath, (error) => {
+      //   if (error) {
+      //     console.log(error);
+      //     res.status(500).send({ msg: "Failed to upload." });
+      //   }
+      res.send(result.insertedCount > 0);
     });
+    // });
+    // });
   });
 
   app.get("/doctors", (req, res) => {
