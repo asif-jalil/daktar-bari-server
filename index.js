@@ -96,7 +96,7 @@ client.connect((err) => {
     //   console.log("File Not uploaded");
     //   res.status(500).send({ msg: "Failed to upload." });
     // }
-    const newImg = img;
+    const newImg = req.files.doctorImg;
     const encImg = newImg.toString("base64");
 
     const image = {
