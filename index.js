@@ -102,7 +102,7 @@ client.connect((err) => {
       const image = {
         type: img.mimetype,
         size: img.size,
-        img: Buffer(encImg, "base64"),
+        img: Buffer.from(encImg, "base64"),
       };
 
       doctorsCollection.insertOne({ ...doctorInfo, doctorImg: image }).then((result) => {
